@@ -46,6 +46,14 @@ $config = [
         ],
         'i18n' => [
             'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'sourceLanguage' => 'ru-RU',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
                 'telegram*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'sourceLanguage' => 'ru-RU',

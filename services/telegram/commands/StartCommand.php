@@ -13,18 +13,6 @@ class StartCommand extends CustomBotCommand
 
     public function execute()
     {
-        $keyboard = [
-            [
-                ['text' => Phrases::REQUEST_CONTACT_BUTTON, 'request_contact' => true]
-            ],
-        ];
-
-        $reply_markup = json_encode([
-            'keyboard' => $keyboard,
-            'resize_keyboard' => true,
-            'one_time_keyboard' => true
-        ]);
-
         $this->replyWithMessage([
             'text' => Yii::t(
                 'telegram',
@@ -33,7 +21,6 @@ class StartCommand extends CustomBotCommand
                     'username' => $this->getUsername(),
                 ]
             ),
-            'reply_markup' => $reply_markup
         ]);
     }
 }

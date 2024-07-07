@@ -56,6 +56,11 @@ abstract class CustomCommand implements interfaces\CustomCommandInterfaces
         return $this->update->getMessage()->getChat()->getUsername();
     }
 
+    public function detectMessageType()
+    {
+        return $this->client->detectMessageType($this->getUpdate());
+    }
+
     public function replyWithMessage(array $params)
     {
         return $this->client->sendMessage(array_merge($params, [
@@ -73,6 +78,13 @@ abstract class CustomCommand implements interfaces\CustomCommandInterfaces
     public function replyWithChatAction(array $params)
     {
         return $this->client->sendChatAction(array_merge($params, [
+            'chat_id' => $this->getChatId()
+        ]));
+    }
+
+    public function replyWithSticker(array $params)
+    {
+        return $this->client->sendSticker(array_merge($params, [
             'chat_id' => $this->getChatId()
         ]));
     }

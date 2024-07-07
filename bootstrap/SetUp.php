@@ -2,11 +2,13 @@
 
 namespace app\bootstrap;
 
+use app\repositories\interfaces\UserRepositoryInterface;
+use app\repositories\UserRepository;
 use app\services\weather\WeatherServiceInterface;
 use app\services\weather\WeatherstackService;
 use app\services\telegram\TelegramClient;
 use app\services\telegram\TelegramClientInterface;
-use app\services\weather\YandexWeatherService;
+use app\services\user\UserService;
 use Yii;
 
 class SetUp implements \yii\base\BootstrapInterface
@@ -25,5 +27,8 @@ class SetUp implements \yii\base\BootstrapInterface
         $container->setSingleton(WeatherServiceInterface::class, function ($container, $params, $config) {
             return new WeatherstackService(Yii::$app->params['weatherstack']['token']);
         });
+
+        $container->setSingleton(UserRepositoryInterface::class, UserRepository::class);
+        $container->setSingleton(UserService::class);
     }
 }

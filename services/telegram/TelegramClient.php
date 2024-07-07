@@ -3,12 +3,15 @@
 namespace app\services\telegram;
 
 use app\constants\LogCategories;
+use app\services\telegram\commands\SignUpCommand;
+use app\services\telegram\commands\RequestContactCommand;
 use app\services\telegram\commands\CustomBotCommand;
 use app\services\telegram\commands\CustomCommand;
 use app\services\telegram\commands\CustomCommandBus;
 use app\services\telegram\commands\HelpCommand;
 use app\services\telegram\commands\SendLocationCommand;
 use app\services\telegram\commands\StartCommand;
+use app\services\telegram\commands\StickerCommand;
 use app\services\telegram\commands\UnknownCommand;
 use app\services\telegram\commands\WeatherQueryCommand;
 use app\services\telegram\enums\Phrases;
@@ -41,8 +44,11 @@ class TelegramClient extends Component implements TelegramClientInterface
         $this->addCustomCommands([
             StartCommand::class,
             HelpCommand::class,
+            SignUpCommand::class,
             WeatherQueryCommand::class,
             SendLocationCommand::class,
+            RequestContactCommand::class,
+            StickerCommand::class,
             UnknownCommand::class,
         ]);
     }

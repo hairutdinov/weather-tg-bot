@@ -1,11 +1,7 @@
 version: "3.8"
 services:
   php:
-    build:
-      context: docker/dockerfiles
-      dockerfile: php.Dockerfile
-      args:
-        - INSTALL_XDEBUG=${INSTALL_XDEBUG}
+    image: khairutdinov/php-yii2-telegram-bot
     working_dir: /app
     volumes:
       - ./:/app
