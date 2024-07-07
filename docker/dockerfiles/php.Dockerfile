@@ -6,55 +6,26 @@ ARG INSTALL_XDEBUG=false
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
         intl \
-        amqp \
-        http
+        http \
+        pdo_pgsql \
+        pgsql
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
     && apt-get install -qq -y \
-      curl \
-      wget \
-      git \
-      zip unzip \
-      libzip-dev \
-      libmcrypt-dev \
-      libmemcached-dev \
       libpq-dev \
-      zlib1g-dev libpng-dev libjpeg-dev \
-    && pecl install mcrypt-1.0.7 \
-    && docker-php-ext-enable mcrypt \
-    && docker-php-ext-install -j$(nproc) \
-        mysqli \
-        pdo pdo_mysql \
-    && docker-php-ext-configure zip \
-    && docker-php-ext-install zip \
     && docker-php-source delete \
     && apt-get remove -y g++ wget \
     && apt-get autoremove --purge -y && apt-get autoclean -y && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* /var/tmp/*
 
-RUN docker-php-ext-install bcmath sockets \
-    && pecl install memcached \
-    && docker-php-ext-enable memcached
+# PostgreSQL Driver
+RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pdo pdo_pgsql pgsql
 
 RUN pecl install xdebug-3.1.5 \
     && docker-php-ext-enable xdebug
-
-#RUN apt-get update && apt-get install -y \
-#    libmagickwand-dev --no-install-recommends \
-#    && pecl install imagick \
-#    && docker-php-ext-enable imagick
-
-RUN apt-get update && apt-get install -y \
-    libgraphicsmagick1-dev graphicsmagick --no-install-recommends \
-    && pecl install gmagick-2.0.6RC1 \
-    && docker-php-ext-enable gmagick
-
-RUN docker-php-ext-configure gd --with-jpeg && \
-    docker-php-ext-install gd
-
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Конфигурация Xdebug
 RUN if [ ${INSTALL_XDEBUG} = true ]; \
